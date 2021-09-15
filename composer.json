@@ -1,5 +1,5 @@
 {
-    "name": "intracto/elastic_synonym",
+    "name": "intracto/elastic-synonym",
     "description": "Library to manage elastic synonyms in your project",
     "type": "library",
     "license": "MIT",
