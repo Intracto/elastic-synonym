@@ -1,6 +1,6 @@
 {
     "name": "intracto/elastic-synonym",
-    "description": "Library to manage elastic synonyms in your project",
+    "description": "Update and refresh elasticsearch synonyms",
     "type": "library",
     "license": "MIT",
     "autoload": {

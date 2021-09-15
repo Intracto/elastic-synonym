@@ -1,7 +1,15 @@
 Intracto Elastic Synonym
 ============
 
-This library reads & writes elasticsearch synonyms
+This library reads/writes elasticsearch synonyms and converts them into an array of editable objects.
+A refresh action can be called whenever you want to make the updated synonyms available for your users.
+
+See `intracto/elastic-synonym-bundle` for a plug-and-play implementation for symfony 4.4+ using bootstrap.
+
+
+Additional requirements:
+* Elasticsearch 7.3+
+* Synonym filter must be applied to the search analyzer. It won't work for index analyzers
 
 Installation
 ============
@@ -35,5 +43,13 @@ Add the following filter under `settings.analysis.filter`:
     'type' => 'synonym',
     'synonyms_path' => PATH, // This needs to be the path inside /etc/elastic. f.e. 'analysis/synonyms.txt
     'updateable' => true, // *must* be true
+],
+```
+
+If you want to add it to your default search analyzer, add the following settings under `settings.analysis.analyzer`:
+```php
+'default_search' => [
+    // ..
+    'filter' => [/*'..', */'my_synonyms'],
 ],
 ```
