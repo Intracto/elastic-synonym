@@ -11,6 +11,7 @@ final class ConfigService
 
     /** @var array<string, Config>  */
     private array $configs = [];
+    private bool $validated = false;
 
     /**
      * @param array <int, array<string, string|array> $rawConfigs
@@ -26,6 +27,13 @@ final class ConfigService
 
     public function getConfigs(): array
     {
+        if (!$this->validated) {
+            $this->validated = true;
+            $this->configs = array_filter($this->configs, static function(Config $config) {
+                return file_exists($config->getFile());
+            });
+        }
+
         return $this->configs;
     }
 
