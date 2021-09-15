@@ -8,5 +8,5 @@ Installation
 
 
 ```console
-$ composer require intracto/elastic_synonym
+$ composer require intracto/elastic-synonym
 ```
