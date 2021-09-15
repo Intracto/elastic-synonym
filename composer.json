@@ -1,0 +1,21 @@
+{
+    "name": "intracto/elastic_synonym",
+    "description": "Library to manage elastic synonyms in your project",
+    "type": "library",
+    "license": "MIT",
+    "autoload": {
+        "psr-4": {
+            "Intracto\\ElasticSynonym\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Roy Van Ginneken",
+            "email": "roy.vanginneken@intracto.com"
+        }
+    ],
+    "require": {
+        "php": ">=7.1.3",
+        "symfony/http-client-contracts": "^2.4"
+    }
+}
