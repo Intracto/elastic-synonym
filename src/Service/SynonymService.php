@@ -11,15 +11,28 @@ final class SynonymService
 {
     public function getSynonyms(Config $config): array
     {
-        dd(file_get_contents($config->getFile()));
+        $synonyms = [];
 
-        return [
-            new Synonym(['fiets', 'loopfiets', 'brommer'], ['fiets', 'loopfiets', 'brommer']),
-            new Synonym(['fiets', 'loopfiets', 'brommer'], ['fiets', 'loopfiets', 'brommer']),
-            new Synonym(['fiets', 'loopfiets', 'brommer'], ['fiets', 'loopfiets', 'brommer']),
-            new Synonym(['fiets', 'loopfiets', 'brommer'], ['fiets', 'loopfiets', 'brommer']),
-            new Synonym(['fiets', 'loopfiets', 'brommer'], ['fiets', 'loopfiets', 'brommer']),
-        ];
+        $file = new \SplFileObject($config->getFile(), 'r') ;
+        foreach ($file as $line) {
+            if ('' === $line) {
+                continue;
+            }
+
+            $parts = array_pad(array_map('trim', explode('=>', $line)), 2, '');
+
+            $left = array_map('trim', explode(',', $parts[0]));
+            $right = array_map('trim', explode(',', $parts[1]));
+
+            // transform implicit to explicit synonyms
+            if (count($left) && !count($right)) {
+                $right = $left;
+            }
+
+            $synonyms[] = new Synonym($left, $right);
+        }
+
+        return $synonyms;
     }
 
     /**
@@ -28,6 +41,9 @@ final class SynonymService
      */
     public function setSynonyms(Config $config, array $synonyms): void
     {
-//        dd($config, $synonyms);
+        $file = new \SplFileObject($config->getFile(), 'w') ;
+        foreach ($synonyms as $synonym) {
+            $file->fwrite(sprintf('%s => %s', implode(', ', $synonym->getWordListLeft()), implode(', ', $synonym->getWordListRight())).PHP_EOL);
+        }
     }
 }
