@@ -11,7 +11,7 @@ final class SynonymService
 {
     public function getSynonyms(Config $config): array
     {
-        dd(file_get_contents('/etc/elasticsearch/analysis/synonyms_en-EU.txt'));
+        dd(file_get_contents($config->getFile()));
 
         return [
             new Synonym(['fiets', 'loopfiets', 'brommer'], ['fiets', 'loopfiets', 'brommer']),
