@@ -28,7 +28,7 @@ This is why we choose to work with a symlink.
 This can also be implemented as you want, but here is a working example using vagrant:
 ```console
 $ mkdir /vagrant/.elastic-synonym
-$ touch /vagrant/.elastic-synonym/synomym.txt # name the file anyway you want
+$ touch /vagrant/.elastic-synonym/synonyms.txt # name the file anyway you want
 
 $ sudo mkdir /etc/elasticsearch/analysis # Only if it does not exist already
 $ sudo ln -s /vagrant/.elastic-synonym/synonyms.txt /etc/elasticsearch/analysis/synonyms.txt
