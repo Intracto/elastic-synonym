@@ -6,6 +6,7 @@ A refresh action can be called whenever you want to make the updated synonyms av
 
 See `intracto/elastic-synonym-bundle` for a plug-and-play implementation for symfony 4.4+ using bootstrap.
 
+Note: make sure you're using a query that supports analyzing, like the regular match filter (example below).
 
 Additional requirements:
 * Elasticsearch 7.3+
@@ -30,8 +31,7 @@ This can also be implemented as you want, but here is a working example using va
 $ mkdir /vagrant/.elastic-synonym
 $ touch /vagrant/.elastic-synonym/synonyms.txt # name the file anyway you want
 
-$ sudo mkdir /etc/elasticsearch/analysis # Only if it does not exist already
-$ sudo ln -s /vagrant/.elastic-synonym/synonyms.txt /etc/elasticsearch/analysis/synonyms.txt
+$ sudo ln -s /vagrant/.elastic-synonym /etc/elasticsearch/analytics
 ```
 
 
@@ -40,8 +40,8 @@ Synonym filter in elastic
 Add the following filter under `settings.analysis.filter`:
 ```php
 'my_synonyms' => [ // a name for your filter
-    'type' => 'synonym',
-    'synonyms_path' => PATH, // This needs to be the path inside /etc/elastic. f.e. 'analysis/synonyms.txt
+    'type' => 'synonym_graph',
+    'synonyms_path' => 'analytics/synonyms.txt', // This needs to be the path inside /etc/elastic.
     'updateable' => true, // *must* be true
 ],
 ```
@@ -52,4 +52,13 @@ If you want to add it to your default search analyzer, add the following setting
     // ..
     'filter' => [/*'..', */'my_synonyms'],
 ],
+```
+
+A simple example (assuming you're using defaults and added the filter to your default_search):
+```php
+$body['query']['bool']['should'][] = ['match' => ['description' => [
+    'query' => 'this is an example',
+    'fuzziness' => 'AUTO',
+    'operator' => 'OR',
+]]];
 ```
