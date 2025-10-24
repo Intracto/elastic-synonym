@@ -4,18 +4,15 @@ namespace Intracto\ElasticSynonym\Model;
 
 final class Config
 {
-    private string $id;
-    private string $name;
-    private string $file;
-    /** @var array <int, string> */
-    private array $indices;
-
-    public function __construct(string $id, string $name, string $file, array $indices)
-    {
-        $this->id = $id;
-        $this->name = $name;
-        $this->file = $file;
-        $this->indices = $indices;
+    /**
+     * @param array<int, string> $indices
+     */
+    public function __construct(
+        private string $id,
+        private string $name,
+        private string $file,
+        private array $indices
+    ) {
     }
 
     public function getId(): string
@@ -33,6 +30,9 @@ final class Config
         return $this->file;
     }
 
+    /**
+     * @return array<int, string>
+     */
     public function getIndices(): array
     {
         return $this->indices;

@@ -2,13 +2,14 @@
 
 namespace Intracto\ElasticSynonym\Service;
 
-use Elasticsearch\ClientBuilder;
 use Intracto\ElasticSynonym\Model\Config;
 use Intracto\ElasticSynonym\Model\Synonym;
-use Symfony\Contracts\HttpClient\HttpClientInterface;
 
 final class SynonymService
 {
+    /**
+     * @return array<int, Synonym>
+     */
     public function getSynonyms(Config $config): array
     {
         $synonyms = [];

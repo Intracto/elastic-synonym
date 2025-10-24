@@ -7,29 +7,30 @@ use Symfony\Contracts\HttpClient\HttpClientInterface;
 
 final class ConfigService
 {
-    private HttpClientInterface $client;
-
-    /** @var array<string, Config>  */
+    /** @var array<string, Config> */
     private array $configs = [];
     private bool $validated = false;
 
     /**
-     * @param array <int, array<string, string|array> $rawConfigs
+     * @param array<int, array<string, string|array<int, string>>> $rawConfigs
      */
-    public function __construct(HttpClientInterface $client, array $rawConfigs)
-    {
-        $this->client = $client;
-
+    public function __construct(
+        private HttpClientInterface $client,
+        array $rawConfigs
+    ) {
         foreach ($rawConfigs as $id => $rawConfig) {
             $this->configs[$id] = new Config($id, $rawConfig['name'], $rawConfig['file'], $rawConfig['indices']);
         }
     }
 
+    /**
+     * @return array<string, Config>
+     */
     public function getConfigs(): array
     {
         if (!$this->validated) {
             $this->validated = true;
-            $this->configs = array_filter($this->configs, static function(Config $config) {
+            $this->configs = array_filter($this->configs, static function(Config $config): bool {
                 return file_exists($config->getFile());
             });
         }
